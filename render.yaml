@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: quran-api
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11

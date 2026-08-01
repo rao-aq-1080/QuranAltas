@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quran Atlas</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <div class="ambient-layer" aria-hidden="true"></div>
+  <div class="page-shell">
+    <header class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow">Quran Atlas</p>
+        <div class="sacred-badge">In the Name of Allah</div>
+        <h1>Study the Quran with search, roots, themes, and a richer reading experience.</h1>
+        <p class="hero-text">Browse by surah, search semantically, compare verses, keep favorites locally, and move through the text in a focused cinematic interface.</p>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-stat">
+          <span id="surah-count">114</span>
+          <label>Surahs available</label>
+        </div>
+        <div class="hero-stat">
+          <span id="bookmark-count">0</span>
+          <label>Bookmarks saved</label>
+        </div>
+        <div class="hero-stat">
+          <span id="history-count">0</span>
+          <label>Recent searches</label>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav-bar">
+      <button class="tab-btn active" data-tab="search">Search</button>
+      <button class="tab-btn" data-tab="surah">Surah Browser</button>
+      <button class="tab-btn" data-tab="root">Root Lookup</button>
+      <button class="tab-btn" data-tab="themes">Themes</button>
+      <button class="tab-btn" data-tab="compare">Compare</button>
+      <button class="tab-btn" data-tab="assistant">AI Assistant</button>
+      <button class="tab-btn" data-tab="about">About</button>
+      <button class="tab-btn" data-tab="library">Library</button>
+    </nav>
+
+    <main class="layout-grid">
+      <section id="search" class="tab-panel active">
+        <div class="panel-head">
+          <div>
+            <h2>Semantic Search</h2>
+            <p>Try a phrase, a concept, or a direct Quranic term.</p>
+          </div>
+          <label class="toggle">
+            <input type="checkbox" id="translation-toggle" checked>
+            <span>Show translation</span>
+          </label>
+        </div>
+
+        <div class="controls-grid">
+          <div class="input-group input-group-wide">
+            <input type="text" id="search-input" placeholder='e.g. "patience during hardship"'>
+            <button id="search-btn">Search</button>
+          </div>
+          <div class="input-group">
+            <input type="number" id="search-limit" min="1" max="20" value="10" placeholder="Results">
+          </div>
+          <div class="input-group">
+            <input type="text" id="filter-surah" placeholder="Filter surah name">
+          </div>
+        </div>
+
+        <div class="action-row">
+          <button class="ghost-btn" id="clear-search-history">Clear recent searches</button>
+          <button class="ghost-btn" id="clear-bookmarks">Clear bookmarks</button>
+        </div>
+
+        <div id="search-status" class="search-status">Preparing semantic search…</div>
+        <div id="search-results" class="results"></div>
+      </section>
+
+      <section id="surah" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Surah Browser</h2>
+            <p>Browse all surahs and open a verse stream.</p>
+          </div>
+          <div class="inline-stats">
+            <span id="surah-status">Loading surahs…</span>
+          </div>
+        </div>
+        <div class="browse-layout">
+          <aside class="browse-list" id="surah-list"></aside>
+          <div class="browse-detail">
+            <div class="detail-toolbar">
+              <input type="number" id="surah-number" min="1" placeholder="Surah #">
+              <button id="load-surah-btn">Load surah</button>
+            </div>
+            <div id="surah-results" class="results"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="root" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Root Lookup</h2>
+            <p>Trace a root and inspect related glosses.</p>
+          </div>
+        </div>
+        <div class="controls-grid">
+          <div class="input-group input-group-wide">
+            <input type="text" id="root-input" placeholder="e.g. rHm (Buckwalter root)">
+            <button id="root-btn">Look up</button>
+          </div>
+        </div>
+        <div id="root-meanings" class="chip-row"></div>
+        <div id="root-results" class="results"></div>
+      </section>
+
+      <section id="themes" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Themes</h2>
+            <p>Browse clustered verses by topic.</p>
+          </div>
+        </div>
+        <div class="browse-layout">
+          <aside id="theme-list" class="browse-list"></aside>
+          <div id="theme-results" class="browse-detail results"></div>
+        </div>
+      </section>
+
+      <section id="compare" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Compare Verses</h2>
+            <p>Place two verses side by side for close reading.</p>
+          </div>
+        </div>
+        <div class="compare-grid">
+          <div class="compare-card">
+            <h3>Verse A</h3>
+            <div class="controls-grid compare-controls">
+              <input type="number" id="compare-a-surah" min="1" placeholder="Surah">
+              <input type="number" id="compare-a-ayah" min="1" placeholder="Ayah">
+            </div>
+          </div>
+          <div class="compare-card">
+            <h3>Verse B</h3>
+            <div class="controls-grid compare-controls">
+              <input type="number" id="compare-b-surah" min="1" placeholder="Surah">
+              <input type="number" id="compare-b-ayah" min="1" placeholder="Ayah">
+            </div>
+          </div>
+        </div>
+        <div class="action-row">
+          <button id="compare-btn">Compare</button>
+        </div>
+        <div id="compare-results" class="compare-results"></div>
+      </section>
+
+      <section id="assistant" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>AI Assistant</h2>
+            <p>Ask Quran and Islam questions with answers grounded in the Quran data and OpenRouter.</p>
+          </div>
+          <div class="inline-stats">
+            <span>OpenRouter key comes from the server environment</span>
+          </div>
+        </div>
+
+        <div class="assistant-shortcuts">
+          <button class="chip-button" data-prompt="What does the Quran say about patience?">Patience</button>
+          <button class="chip-button" data-prompt="What verses describe mercy and forgiveness?">Mercy</button>
+          <button class="chip-button" data-prompt="What does the Quran say about prayer?">Prayer</button>
+          <button class="chip-button" data-prompt="What verses talk about guidance and truth?">Guidance</button>
+        </div>
+
+        <div class="assistant-input-row">
+          <textarea id="assistant-input" rows="4" placeholder="Ask a Quran or Islam question..."></textarea>
+          <button id="assistant-btn">Ask Assistant</button>
+        </div>
+
+        <div class="assistant-result-card">
+          <div class="assistant-result-head">
+            <h3>Answer</h3>
+            <span id="assistant-model">Ready</span>
+          </div>
+          <div id="assistant-answer" class="assistant-answer empty-state">Your answer will appear here.</div>
+        </div>
+
+        <div class="assistant-result-card">
+          <div class="assistant-result-head">
+            <h3>Sources</h3>
+            <span>Grounding verses used for the answer</span>
+          </div>
+          <div id="assistant-sources" class="results"></div>
+        </div>
+      </section>
+
+      <section id="about" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>About the Founder</h2>
+            <p>Meet the person behind Quran Atlas and the vision driving the project.</p>
+          </div>
+        </div>
+        <div class="about-card">
+          <div class="about-hero">
+            <h3>Rao Abdullah</h3>
+            <p class="about-role">AI Engineer • Software Engineer • Founder of Quran Atlas</p>
+          </div>
+          <p>Rao Abdullah is an AI Engineer, Software Engineer, and the Founder of Quran Atlas—an AI-powered platform dedicated to transforming how people explore, understand, and engage with the Holy Qur'an through modern technology.</p>
+          <p>Driven by a passion for combining artificial intelligence with meaningful social impact, he is building Quran Atlas to provide interactive learning experiences, intelligent search, geographical visualization of Qur'anic places, contextual insights, and AI-assisted educational tools that make Qur'anic knowledge more accessible to learners worldwide.</p>
+          <p>Alongside Quran Atlas, Rao Abdullah focuses on Generative AI, Machine Learning, Retrieval-Augmented Generation (RAG), backend engineering, and scalable software systems. His mission is to develop intelligent products that solve real-world problems and create lasting educational impact through innovation.</p>
+          <p>As the founder of Quran Atlas, he is committed to building technology that bridges faith, education, and artificial intelligence, empowering individuals to explore the Qur'an in a more engaging, insightful, and interactive way.</p>
+          <div class="about-links">
+            <a href="https://www.linkedin.com/in/raoabdullah1080/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a href="mailto:raoengr1080@gmail.com">raoengr1080@gmail.com</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="library" class="tab-panel">
+        <div class="panel-head">
+          <div>
+            <h2>Library</h2>
+            <p>Your local bookmarks and recent searches.</p>
+          </div>
+        </div>
+        <div class="library-grid">
+          <div class="library-card">
+            <h3>Bookmarks</h3>
+            <div id="bookmark-list" class="stack-list"></div>
+          </div>
+          <div class="library-card">
+            <h3>Recent Searches</h3>
+            <div id="history-list" class="stack-list"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
